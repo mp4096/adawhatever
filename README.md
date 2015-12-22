@@ -1,2 +1,2 @@
-# adawhatever
-Modern SGD solvers written in MATLAB
+# `adawhatever`
+Various SGD solvers written in MATLAB

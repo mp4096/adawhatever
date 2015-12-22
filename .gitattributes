@@ -1,0 +1,13 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Custom for MATLAB/Simulink
+*.m         text
+*.mat       binary
+*.p         binary
+*.slx       binary
+*.mdl       binary
+
+# LaTeX stuff
+*.tex       text
+*.bib       text
