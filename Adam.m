@@ -62,9 +62,9 @@ for i = 1 : 1 : nIter
     vCurr = beta2.*vOld + (1 - beta2).*(sgCurr.^2);
     
     % Compute bias-corrected 1st moment estimate
-    mHatCurr = mCurr/(1 - beta1^i);
+    mHatCurr = mCurr./(1 - beta1^i);
     % Compute bias-corrected 2nd raw moment estimate
-    vHatCurr = vCurr/(1 - beta2^i);
+    vHatCurr = vCurr./(1 - beta2^i);
     
     % Update decision variables
     xMat(:, i + 1) = xMat(:, i) - ...
