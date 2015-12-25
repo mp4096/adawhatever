@@ -1,11 +1,11 @@
 function xMat = VanillaSGD(sg, x0, stepSize, idxSG, nIter)
 % Vanilla stochastic gradient descent solver
 %
-% Decision variable `x` is a column vector
+% Decision variable `x` is a column vector.
 %
 % Function handle `sg` to the stochastic gradient accepts the index of the
 % stochastic gradient as the first argument and the value of the decision
-% variable as the second argument, i.e. `sg(idx, x)`
+% variable as the second argument, i.e. `sg(idx, x)`.
 %
 % Input:
 %   sg       : function handle to the stochastic gradient
