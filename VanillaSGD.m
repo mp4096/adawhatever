@@ -1,21 +1,28 @@
-function res = VanillaSGD(fun, sg, w0, stepSize, idxSG, nIter)
-%VANILLASGD Vanilla stochastic gradient descent solver
+function xMat = VanillaSGD(sg, x0, stepSize, idxSG, nIter)
+% Vanilla stochastic gradient descent solver
+%
+% Decision variable `x` is a column vector
+%
+% Function handle `sg` to the stochastic gradient accepts the index of the
+% stochastic gradient as the first argument and the value of the decision
+% variable as the second argument, i.e. `sg(idx, x)`
 %
 % Input:
-%   fun      : function handle to the objective function
 %   sg       : function handle to the stochastic gradient
-%   w0       : initial guess for the decision variables
-%   stepSize : step size, scalar or a function handle
+%   x0       : initial guess for the decision variables
+%   stepSize : scalar step size
 %   idxSG    : indices of the gradients to use
 %   nIter    : number of iterations to perform
 %
+% Output:
+%   xMat     : matrix with decision variables at each iteration step
+%
 
-w = zeros(length(w0), nIter + 1);
+% Allocate output
+xMat = zeros(length(x0), nIter + 1);
 
-% Check if `stepSize` is a scalar, convert it to a function if it is one
-if isscalar(stepSize)
-    stepSize = @(i) stepSize;
-end
+% Set the initial guess
+xMat(:, 1) = x0;
 
 % Repeat `idxSG` if it has fewer than `nIter` elements
 if length(idxSG) < nIter
@@ -25,10 +32,7 @@ end
 
 % Run optimisation
 for i = 1 : 1 : nIter
-    w(:, i + 1) = w(:, i) - stepSize(i).*sg(idxSG(i), w(:, i));
+    xMat(:, i + 1) = xMat(:, i) - stepSize.*sg(idxSG(i), xMat(:, i));
 end
-
-% Save results
-res.w = w;
 
 end
