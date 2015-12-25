@@ -10,7 +10,7 @@ function xMat = Adam(sg, x0, stepSize, idxSG, nIter, beta1, beta2, epsilon)
 % variable as the second argument, i.e. `sg(idx, x)`.
 %
 % References:
-%	[1] Kingma, Diederik and Ba, Jimmy. Adam: A Method for Stochastic
+%   [1] Kingma, Diederik and Ba, Jimmy. Adam: A Method for Stochastic
 %       Optimization. arXiv preprint: http://arxiv.org/abs/1412.6980
 %
 % Input:
@@ -25,6 +25,8 @@ function xMat = Adam(sg, x0, stepSize, idxSG, nIter, beta1, beta2, epsilon)
 %
 % Output:
 %   xMat     : matrix with decision variables at each iteration step
+%
+% See also: ADAMAX
 %
 
 % Store default value for `epsilon` if there are only 7 input arguments

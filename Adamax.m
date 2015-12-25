@@ -10,7 +10,7 @@ function xMat = Adamax(sg, x0, stepSize, idxSG, nIter, beta1, beta2)
 % variable as the second argument, i.e. `sg(idx, x)`.
 %
 % References:
-%	[1] Kingma, Diederik and Ba, Jimmy. Adam: A Method for Stochastic
+%   [1] Kingma, Diederik and Ba, Jimmy. Adam: A Method for Stochastic
 %       Optimization. arXiv preprint: http://arxiv.org/abs/1412.6980
 %
 % Input:
@@ -24,6 +24,8 @@ function xMat = Adamax(sg, x0, stepSize, idxSG, nIter, beta1, beta2)
 %
 % Output:
 %   xMat     : matrix with decision variables at each iteration step
+%
+% See also: ADAM
 %
 
 % Store the number of decision variables
