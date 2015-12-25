@@ -1,5 +1,5 @@
 function xMat = Adam(sg, x0, stepSize, idxSG, nIter, beta1, beta2, epsilon)
-% Adam algorithm for SGD optimisation (Kingma & Ba, 2015)
+%ADAM Adam algorithm for SGD optimisation (Kingma & Ba, 2015)
 %
 % Implemented according to preprint 1412.6980v8, 23 July 2015.
 %
@@ -27,6 +27,7 @@ function xMat = Adam(sg, x0, stepSize, idxSG, nIter, beta1, beta2, epsilon)
 %   xMat     : matrix with decision variables at each iteration step
 %
 
+% Store default value for `epsilon` if there are only 7 input arguments
 if nargin == 7
     epsilon = sqrt(eps);
 end

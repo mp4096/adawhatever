@@ -1,5 +1,5 @@
 function xMat = VanillaSGD(sg, x0, stepSize, idxSG, nIter)
-% Vanilla stochastic gradient descent solver
+%VANILLASGD Vanilla stochastic gradient descent solver
 %
 % Decision variable `x` is a column vector.
 %
