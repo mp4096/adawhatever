@@ -37,10 +37,10 @@ xMat = zeros(nDecVar, nIter + 1);
 % Set the initial guess
 xMat(:, 1) = x0;
 
-% Repeat `idxSG` if it has fewer than `nIter` elements
-if length(idxSG) < nIter
-    idxSG = repmat(idxSG(:), ceil(nIter/length(idxSG)), 1);
-    idxSG(nIter + 1 : 1 : end) = [];
+% Repeat `idxSG` if it has fewer columns than `nIter`
+if size(idxSG, 2) < nIter
+    idxSG = repmat(idxSG, 1, ceil(nIter/size(idxSG, 2)));
+    idxSG(:, nIter + 1 : 1 : end) = [];
 end
 
 % Initialise moment estimate and the exponentially weighted infinity norm
@@ -50,7 +50,7 @@ u = zeros(nDecVar, 1);
 % Run optimisation
 for i = 1 : 1 : nIter
     % Get gradients w.r.t. stochastic objective at the current iteration
-    sgCurr = sg(idxSG(i), xMat(:, i));
+    sgCurr = sg(idxSG(:, i), xMat(:, i));
     
     % Update biased 1st moment estimate
     m = beta1.*m + (1 - beta1).*sgCurr;
