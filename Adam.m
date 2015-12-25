@@ -10,8 +10,8 @@ function xMat = Adam(sg, x0, stepSize, idxSG, nIter, beta1, beta2, epsilon)
 % variable as the second argument, i.e. `sg(idx, x)`.
 %
 % References:
-%	[1]  Kingma, Diederik and Ba, Jimmy. Adam: A Method for Stochastic
-%        Optimization. arXiv preprint: http://arxiv.org/abs/1412.6980
+%	[1] Kingma, Diederik and Ba, Jimmy. Adam: A Method for Stochastic
+%       Optimization. arXiv preprint: http://arxiv.org/abs/1412.6980
 %
 % Input:
 %   sg       : function handle to the stochastic gradient
@@ -48,8 +48,8 @@ if length(idxSG) < nIter
 end
 
 % Initialise moment estimates
-mOld = zeros(nDecVar, 1);
-vOld = zeros(nDecVar, 1);
+m = zeros(nDecVar, 1);
+v = zeros(nDecVar, 1);
 
 % Run optimisation
 for i = 1 : 1 : nIter
@@ -57,22 +57,17 @@ for i = 1 : 1 : nIter
     sgCurr = sg(idxSG(i), xMat(:, i));
     
     % Update biased 1st moment estimate
-    mCurr = beta1.*mOld + (1 - beta1).*sgCurr;
+    m = beta1.*m + (1 - beta1).*sgCurr;
     % Update biased 2nd raw moment estimate
-    vCurr = beta2.*vOld + (1 - beta2).*(sgCurr.^2);
+    v = beta2.*v + (1 - beta2).*(sgCurr.^2);
     
     % Compute bias-corrected 1st moment estimate
-    mHatCurr = mCurr./(1 - beta1^i);
+    mHat = m./(1 - beta1^i);
     % Compute bias-corrected 2nd raw moment estimate
-    vHatCurr = vCurr./(1 - beta2^i);
+    vHat = v./(1 - beta2^i);
     
     % Update decision variables
-    xMat(:, i + 1) = xMat(:, i) - ...
-        stepSize.*mHatCurr./(sqrt(vHatCurr) + epsilon);
-    
-    % Shift the moment estimates
-    mOld = mCurr;
-    vOld = vCurr;
+    xMat(:, i + 1) = xMat(:, i) - stepSize.*mHat./(sqrt(vHat) + epsilon);
 end
 
 end

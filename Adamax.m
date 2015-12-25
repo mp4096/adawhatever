@@ -10,8 +10,8 @@ function xMat = Adamax(sg, x0, stepSize, idxSG, nIter, beta1, beta2)
 % variable as the second argument, i.e. `sg(idx, x)`.
 %
 % References:
-%	[1]  Kingma, Diederik and Ba, Jimmy. Adam: A Method for Stochastic
-%        Optimization. arXiv preprint: http://arxiv.org/abs/1412.6980
+%	[1] Kingma, Diederik and Ba, Jimmy. Adam: A Method for Stochastic
+%       Optimization. arXiv preprint: http://arxiv.org/abs/1412.6980
 %
 % Input:
 %   sg       : function handle to the stochastic gradient
@@ -42,8 +42,8 @@ if length(idxSG) < nIter
 end
 
 % Initialise moment estimate and the exponentially weighted infinity norm
-mOld = zeros(nDecVar, 1);
-uOld = zeros(nDecVar, 1);
+m = zeros(nDecVar, 1);
+u = zeros(nDecVar, 1);
 
 % Run optimisation
 for i = 1 : 1 : nIter
@@ -51,19 +51,15 @@ for i = 1 : 1 : nIter
     sgCurr = sg(idxSG(i), xMat(:, i));
     
     % Update biased 1st moment estimate
-    mCurr = beta1.*mOld + (1 - beta1).*sgCurr;
+    m = beta1.*m + (1 - beta1).*sgCurr;
     % Update the exponentially weighted infinity norm
-    uCurr = max(beta2.*uOld, abs(sgCurr));
+    u = max(beta2.*u, abs(sgCurr));
     
-    % Compute bias-corrected 1st moment estimate
-    mHatCurr = mCurr./(1 - beta1^i);
+    % Compute the bias-corrected 1st moment estimate
+    mHat = m./(1 - beta1^i);
     
     % Update decision variables
-    xMat(:, i + 1) = xMat(:, i) - stepSize.*mHatCurr./uHatCurr;
-    
-    % Shift the moment estimates
-    mOld = mCurr;
-    uOld = uCurr;
+    xMat(:, i + 1) = xMat(:, i) - stepSize.*mHat./u;
 end
 
 end
