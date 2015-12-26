@@ -1,7 +1,12 @@
+%% Initialise
+
 clear
 close all
 clc
 
+%% Objective function and its gradients
+
+% Store coefficients (all Qa_i are symmetric)
 Qa(:, :,  1) = [ ...
     1.610e+00, 6.334e-01, 1.027e+00; ...
     6.334e-01, 1.989e+00, 3.588e+00; ...
@@ -83,93 +88,72 @@ Qa(:, :, 20) = [ ...
     1.562e+00, 2.019e+00, 3.075e+00; ...
     5.638e-01, 3.075e+00, 7.198e-01];
 
-Qa = 1e-2*Qa(:, :, 1 : 1 : 20);
+% Store the number of addends in the stochastic objective
+nQa = size(Qa, 3);
 
-objFun = @(x) 0.5*([x', 1]*sum(Qa, 3)*[x; 1]);
-objFunStoch = @(i, x) 0.5*([x', 1]*Qa(:, :, i)*[x; 1]);
+% Define the objective function
+objFun = @(x) 0.5*([x', 1]*sum(Qa, 3)*[x; 1])./nQa;
 
-grad = @(i, x) ([x; 1]'*sum(Qa, 3)*eye(3, 2))';
+% Define the full gradient and the stochastic gradient functions
+grad = @(x) ([x; 1]'*sum(Qa, 3)*eye(3, 2))'./nQa;
 gradStoch = @(i, x) ([x; 1]'*Qa(:, :, i)*eye(3, 2))';
 
-rangeX = linspace(-4, 4, 50);
-rangeY = linspace(-10, 10, 100);
+%% Compute the objective function values (for plotting)
+
+rangeX = linspace(-4, +4, 100);
+rangeY = linspace(-9, +9, 100);
 
 [X, Y] = meshgrid(rangeX, rangeY);
 
-ZTotal = zeros(size(X));
-ZSingle = zeros(size(X, 1), size(X, 2), size(Qa, 3));
+Z = zeros(size(X));
 
 for i = 1 : 1 : length(rangeX)
     for j = 1 : 1 : length(rangeY)
-        ZTotal(j, i) = objFun([rangeX(i); rangeY(j)]);
-        
-        % =<default<=
-        % for k = 1 : 1 : size(Qa, 3)
-        % ZSingle(j, i, k) = objFunStoch(k, [rangeX(i); rangeY(j)]);
-        % end
-        % =>default>=
+        Z(j, i) = objFun([rangeX(i); rangeY(j)]);
     end
 end
 
-mainFig = figure;
-contour(X, Y, ZTotal, 200);
-xlabel('x');
-ylabel('y');
-
-% =<default<=
-% for k = 1 : 1 : size(Qa, 3)
-% figure
-% contourf(X, Y, ZSingle(:, :, k));
-% xlabel('x');
-% ylabel('y');
-% end
-% =>default>=
-
-%%
+%% Perform optimisation
 
 x0 = [3; -4];
 nIter = 500;
-idxSG = randi(20, 1, nIter);
+idxSG = randi(nQa, 1, nIter);
 
-solverNames = {'Adam', 'Adamax', 'AdaGrad', 'AdaGradDecay', 'Vanilla SGD'};
+solvers = {'Adam', 'Adamax', 'AdaGrad', 'AdaGradDecay', 'VanillaSGD'};
 
-xMatAdam = Adam(gradStoch, x0, 0.1, idxSG, nIter, 0.9, 0.999);
-xMatAdamax = Adamax(gradStoch, x0, 0.1, idxSG, nIter, 0.9, 0.999);
-xMatAdaGrad = AdaGrad(gradStoch, x0, 0.1, idxSG, nIter);
-xMatAdaGradDecay = AdaGradDecay(gradStoch, x0, 0.1, idxSG, nIter, 0.9);
-xMatVanillaSGD = VanillaSGD(gradStoch, x0, 0.1, idxSG, nIter);
+xMat.Adam = Adam(gradStoch, x0, 0.1, idxSG, nIter, 0.8, 0.999);
+xMat.Adamax = Adamax(gradStoch, x0, 0.1, idxSG, nIter, 0.9, 0.999);
+xMat.AdaGrad = AdaGrad(gradStoch, x0, 0.1, idxSG, nIter);
+xMat.AdaGradDecay = AdaGradDecay(gradStoch, x0, 0.1, idxSG, nIter, 0.9);
+xMat.VanillaSGD = VanillaSGD(gradStoch, x0, 0.01, idxSG, nIter);
 
-
-objFunAdam = zeros(1, nIter);
-objFunAdamax = zeros(1, nIter);
-objFunAdaGrad = zeros(1, nIter);
-objFunAdaGradDecay = zeros(1, nIter);
-objFunVanillaSGD = zeros(1, nIter);
-
-for i = 1 : 1 : nIter
-    objFunAdam(i) = objFun(xMatAdam(:, i));
-    objFunAdamax(i) = objFun(xMatAdamax(:, i));
-    objFunAdaGrad(i) = objFun(xMatAdaGrad(:, i));
-    objFunAdaGradDecay(i) = objFun(xMatAdaGradDecay(:, i));
-    objFunVanillaSGD(i) = objFun(xMatVanillaSGD(:, i));
+for i = 1 : 1 : length(solvers)
+    objFunMat.(solvers{i}) = ...
+        cellfun(objFun, num2cell(xMat.(solvers{i}), 1));
 end
 
-figure
-plot(objFunAdam);
-hold on
-plot(objFunAdamax);
-plot(objFunAdaGrad);
-plot(objFunAdaGradDecay);
-plot(objFunVanillaSGD);
-hold off
-legend(solverNames);
+%% Plot results -- Convergence plot
 
-figure(mainFig);
-hold on
-plot(xMatAdam(1, :), xMatAdam(2, :));
-plot(xMatAdamax(1, :), xMatAdamax(2, :));
-plot(xMatAdaGrad(1, :), xMatAdaGrad(2, :));
-plot(xMatAdaGradDecay(1, :), xMatAdaGradDecay(2, :));
-plot(xMatVanillaSGD(1, :), xMatVanillaSGD(2, :));
+figConvergence = figure( ...
+    'Name', 'Convergence behaviour of different solvers');
+for i = 1 : 1 : length(solvers)
+    plot(objFunMat.(solvers{i}));
+    hold on
+end
 hold off
-legend([{'Obj fun'}, solverNames]);
+legend(solvers);
+
+%% Plot results -- Contour plot of the objective function
+
+figContour = figure('Name', 'Contour plot of the objective function');
+
+contour(X, Y, Z, 100);
+xlabel('x');
+ylabel('y');
+
+hold on
+for i = 1 : 1 : length(solvers)
+    plot(xMat.(solvers{i})(1, :), xMat.(solvers{i})(2, :));
+end
+hold off
+legend([{'Obj fun'}, solvers]);
