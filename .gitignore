@@ -60,7 +60,6 @@ Temporary Items
 # =========================
 *.asv
 *.autosave
-*.mat
 # MATLAB Coder
 *.mexw64
 *.mex
