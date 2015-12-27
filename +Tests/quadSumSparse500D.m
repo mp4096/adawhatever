@@ -37,12 +37,12 @@ solvers = { ...
     'Adamax', ...
     };
 
-xMat.VanillaSGD = VanillaSGD(gradStoch, x0, 1e-1, idxSG, nIter);
-xMat.AdaGrad = AdaGrad(gradStoch, x0, 1e-1, idxSG, nIter);
-xMat.AdaGradDecay = AdaGradDecay(gradStoch, x0, 1e-1, idxSG, nIter, 0.9);
-xMat.Adadelta = Adadelta(gradStoch, x0, idxSG, nIter, 0.95);
-xMat.Adam = Adam(gradStoch, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
-xMat.Adamax = Adamax(gradStoch, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
+xMat.VanillaSGD = VanillaSGD(gradStoch, x0, nIter, idxSG, 1e-1);
+xMat.AdaGrad = AdaGrad(gradStoch, x0, nIter, idxSG, 1e-1);
+xMat.AdaGradDecay = AdaGradDecay(gradStoch, x0, nIter, idxSG, 1e-1, 0.9);
+xMat.Adadelta = Adadelta(gradStoch, x0, nIter, idxSG, 0.95);
+xMat.Adam = Adam(gradStoch, x0, nIter, idxSG, 1e-1, 0.9, 0.999);
+xMat.Adamax = Adamax(gradStoch, x0, nIter, idxSG, 1e-1, 0.9, 0.999);
 
 
 for i = 1 : 1 : length(solvers)
@@ -71,12 +71,12 @@ idxSG = randi(nQa, 10, nIter);
 
 avgSG = @(idx, x) AvgGrad(gradStoch, idx, x);
 
-xMat.VanillaSGD = VanillaSGD(avgSG, x0, 1e-1, idxSG, nIter);
-xMat.AdaGrad = AdaGrad(avgSG, x0, 1e-1, idxSG, nIter);
-xMat.AdaGradDecay = AdaGradDecay(avgSG, x0, 1e-1, idxSG, nIter, 0.9);
-xMat.Adadelta = Adadelta(avgSG, x0, idxSG, nIter, 0.95);
-xMat.Adam = Adam(avgSG, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
-xMat.Adamax = Adamax(avgSG, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
+xMat.VanillaSGD = VanillaSGD(avgSG, x0, nIter, idxSG, 1e-1);
+xMat.AdaGrad = AdaGrad(avgSG, x0, nIter, idxSG, 1e-1);
+xMat.AdaGradDecay = AdaGradDecay(avgSG, x0, nIter, idxSG, 1e-1, 0.9);
+xMat.Adadelta = Adadelta(avgSG, x0, nIter, idxSG, 0.95);
+xMat.Adam = Adam(avgSG, x0, nIter, idxSG, 1e-1, 0.9, 0.999);
+xMat.Adamax = Adamax(avgSG, x0, nIter, idxSG, 1e-1, 0.9, 0.999);
 
 
 for i = 1 : 1 : length(solvers)

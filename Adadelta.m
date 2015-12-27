@@ -1,4 +1,4 @@
-function xMat = Adadelta(sg, x0, idxSG, nIter, beta, epsilon)
+function xMat = Adadelta(sg, x0, nIter, idxSG, beta, epsilon)
 %ADADELTA Adadelta algorithm for SGD optimisation (Zeiler, 2012)
 %
 % Implemented according to preprint 1212.5701v1, 22 Dec 2012.
@@ -16,8 +16,8 @@ function xMat = Adadelta(sg, x0, idxSG, nIter, beta, epsilon)
 % Input:
 %   sg       : function handle to the stochastic gradient
 %   x0       : initial guess for the decision variables
-%   idxSG    : indices of the gradients to use
 %   nIter    : number of iterations to perform
+%   idxSG    : indices of the gradients to use
 %   beta     : exponential decay rate for moving averages
 %   epsilon  : back-to-numerical-reality addend, default: `sqrt(eps)`
 %

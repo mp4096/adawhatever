@@ -1,4 +1,4 @@
-function xMat = AdaGradDecay(sg, x0, stepSize, idxSG, nIter, beta, epsilon)
+function xMat = AdaGradDecay(sg, x0, nIter, idxSG, stepSize, beta, epsilon)
 %ADAGRADDECAY AdaGrad algorithm with exp. decay of historical gradients
 %
 % Implemented according to [2] and [3].
@@ -20,9 +20,9 @@ function xMat = AdaGradDecay(sg, x0, stepSize, idxSG, nIter, beta, epsilon)
 % Input:
 %   sg       : function handle to the stochastic gradient
 %   x0       : initial guess for the decision variables
-%   stepSize : scalar step size
-%   idxSG    : indices of the gradients to use
 %   nIter    : number of iterations to perform
+%   idxSG    : indices of the gradients to use
+%   stepSize : scalar step size
 %   beta     : exponential decay rate for historical gradients
 %   epsilon  : back-to-numerical-reality addend, default: `sqrt(eps)`
 %

@@ -1,4 +1,4 @@
-function xMat = Adam(sg, x0, stepSize, idxSG, nIter, beta1, beta2, epsilon)
+function xMat = Adam(sg, x0, nIter, idxSG, stepSize, beta1, beta2, epsilon)
 %ADAM Adam algorithm for SGD optimisation (Kingma & Ba, 2015)
 %
 % Implemented according to preprint 1412.6980v8, 23 July 2015.
@@ -16,9 +16,9 @@ function xMat = Adam(sg, x0, stepSize, idxSG, nIter, beta1, beta2, epsilon)
 % Input:
 %   sg       : function handle to the stochastic gradient
 %   x0       : initial guess for the decision variables
-%   stepSize : scalar step size
-%   idxSG    : indices of the gradients to use
 %   nIter    : number of iterations to perform
+%   idxSG    : indices of the gradients to use
+%   stepSize : scalar step size
 %   beta1    : exponential decay rate for the 1st moment estimate
 %   beta2    : exponential decay rate for the 2nd moment estimate
 %   epsilon  : back-to-numerical-reality addend, default: `sqrt(eps)`

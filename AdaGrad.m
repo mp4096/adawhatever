@@ -1,4 +1,4 @@
-function xMat = AdaGrad(sg, x0, stepSize, idxSG, nIter, epsilon)
+function xMat = AdaGrad(sg, x0, nIter, idxSG, stepSize, epsilon)
 %ADAGRAD AdaGrad algorithm (Duchi, Hazan & Singer, 2010)
 %
 % Implemented according to [2].
@@ -20,9 +20,9 @@ function xMat = AdaGrad(sg, x0, stepSize, idxSG, nIter, epsilon)
 % Input:
 %   sg       : function handle to the stochastic gradient
 %   x0       : initial guess for the decision variables
-%   stepSize : scalar step size
-%   idxSG    : indices of the gradients to use
 %   nIter    : number of iterations to perform
+%   idxSG    : indices of the gradients to use
+%   stepSize : scalar step size
 %   epsilon  : back-to-numerical-reality addend, default: `sqrt(eps)`
 %
 % Output:

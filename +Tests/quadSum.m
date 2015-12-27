@@ -128,12 +128,12 @@ solvers = { ...
     'Adamax', ...
     };
 
-xMat.VanillaSGD = VanillaSGD(gradStoch, x0, 0.01, idxSG, nIter);
-xMat.AdaGrad = AdaGrad(gradStoch, x0, 0.1, idxSG, nIter);
-xMat.AdaGradDecay = AdaGradDecay(gradStoch, x0, 0.1, idxSG, nIter, 0.9);
-xMat.Adadelta = Adadelta(gradStoch, x0, idxSG, nIter, 0.95);
-xMat.Adam = Adam(gradStoch, x0, 0.1, idxSG, nIter, 0.8, 0.999);
-xMat.Adamax = Adamax(gradStoch, x0, 0.1, idxSG, nIter, 0.9, 0.999);
+xMat.VanillaSGD = VanillaSGD(gradStoch, x0, nIter, idxSG, 0.01);
+xMat.AdaGrad = AdaGrad(gradStoch, x0, nIter, idxSG, 0.1);
+xMat.AdaGradDecay = AdaGradDecay(gradStoch, x0, nIter, idxSG, 0.1, 0.9);
+xMat.Adadelta = Adadelta(gradStoch, x0, nIter, idxSG, 0.95);
+xMat.Adam = Adam(gradStoch, x0, nIter, idxSG, 0.1, 0.8, 0.999);
+xMat.Adamax = Adamax(gradStoch, x0, nIter, idxSG, 0.1, 0.9, 0.999);
 
 
 for i = 1 : 1 : length(solvers)

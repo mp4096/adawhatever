@@ -1,4 +1,4 @@
-function xMat = VanillaSGD(sg, x0, stepSize, idxSG, nIter)
+function xMat = VanillaSGD(sg, x0, nIter, idxSG, stepSize)
 %VANILLASGD Vanilla stochastic gradient descent solver
 %
 % Decision variable `x` is a column vector.
@@ -10,9 +10,9 @@ function xMat = VanillaSGD(sg, x0, stepSize, idxSG, nIter)
 % Input:
 %   sg       : function handle to the stochastic gradient
 %   x0       : initial guess for the decision variables
-%   stepSize : scalar step size
-%   idxSG    : indices of the gradients to use
 %   nIter    : number of iterations to perform
+%   idxSG    : indices of the gradients to use
+%   stepSize : scalar step size
 %
 % Output:
 %   xMat     : matrix with decision variables at each iteration step
