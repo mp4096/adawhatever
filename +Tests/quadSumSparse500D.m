@@ -28,13 +28,22 @@ x0 = ones(nDecVar, 1);
 nIter = 1000;
 idxSG = randi(nQa, 1, nIter);
 
-solvers = {'Adam', 'Adamax', 'AdaGrad', 'AdaGradDecay', 'VanillaSGD'};
+solvers = { ...
+    'VanillaSGD', ...
+    'AdaGrad', ...
+    'AdaGradDecay', ...
+    'Adadelta', ...
+    'Adam', ...
+    'Adamax', ...
+    };
 
-xMat.Adam = Adam(gradStoch, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
-xMat.Adamax = Adamax(gradStoch, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
+xMat.VanillaSGD = VanillaSGD(gradStoch, x0, 1e-1, idxSG, nIter);
 xMat.AdaGrad = AdaGrad(gradStoch, x0, 1e-1, idxSG, nIter);
 xMat.AdaGradDecay = AdaGradDecay(gradStoch, x0, 1e-1, idxSG, nIter, 0.9);
-xMat.VanillaSGD = VanillaSGD(gradStoch, x0, 1e-1, idxSG, nIter);
+xMat.Adadelta = Adadelta(gradStoch, x0, idxSG, nIter, 0.95);
+xMat.Adam = Adam(gradStoch, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
+xMat.Adamax = Adamax(gradStoch, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
+
 
 for i = 1 : 1 : length(solvers)
     objFunMat.(solvers{i}) = ...
@@ -62,11 +71,13 @@ idxSG = randi(nQa, 10, nIter);
 
 avgSG = @(idx, x) AvgGrad(gradStoch, idx, x);
 
-xMat.Adam = Adam(avgSG, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
-xMat.Adamax = Adamax(avgSG, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
+xMat.VanillaSGD = VanillaSGD(avgSG, x0, 1e-1, idxSG, nIter);
 xMat.AdaGrad = AdaGrad(avgSG, x0, 1e-1, idxSG, nIter);
 xMat.AdaGradDecay = AdaGradDecay(avgSG, x0, 1e-1, idxSG, nIter, 0.9);
-xMat.VanillaSGD = VanillaSGD(avgSG, x0, 1e-1, idxSG, nIter);
+xMat.Adadelta = Adadelta(avgSG, x0, idxSG, nIter, 0.95);
+xMat.Adam = Adam(avgSG, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
+xMat.Adamax = Adamax(avgSG, x0, 1e-1, idxSG, nIter, 0.9, 0.999);
+
 
 for i = 1 : 1 : length(solvers)
     objFunMat.(solvers{i}) = ...
@@ -87,4 +98,4 @@ title(['Convergence behaviour of different solvers, ', ...
     'averaged stochastic gradient']);
 
 linkaxes(ax, 'xy');
-xlim([1, nIter]);
+xlim([1, nIter + 1]);

@@ -100,8 +100,8 @@ gradStoch = @(i, x) ([x; 1]'*Qa(:, :, i)*eye(3, 2))';
 
 %% Compute the objective function values (for plotting)
 
-rangeX = linspace(-4, +4, 100);
-rangeY = linspace(-9, +9, 100);
+rangeX = linspace(-2, +4, 100);
+rangeY = linspace(-6, +2, 100);
 
 [X, Y] = meshgrid(rangeX, rangeY);
 
@@ -119,13 +119,22 @@ x0 = [3; -4];
 nIter = 500;
 idxSG = randi(nQa, 1, nIter);
 
-solvers = {'Adam', 'Adamax', 'AdaGrad', 'AdaGradDecay', 'VanillaSGD'};
+solvers = { ...
+    'VanillaSGD', ...
+    'AdaGrad', ...
+    'AdaGradDecay', ...
+    'Adadelta', ...
+    'Adam', ...
+    'Adamax', ...
+    };
 
-xMat.Adam = Adam(gradStoch, x0, 0.1, idxSG, nIter, 0.8, 0.999);
-xMat.Adamax = Adamax(gradStoch, x0, 0.1, idxSG, nIter, 0.9, 0.999);
+xMat.VanillaSGD = VanillaSGD(gradStoch, x0, 0.01, idxSG, nIter);
 xMat.AdaGrad = AdaGrad(gradStoch, x0, 0.1, idxSG, nIter);
 xMat.AdaGradDecay = AdaGradDecay(gradStoch, x0, 0.1, idxSG, nIter, 0.9);
-xMat.VanillaSGD = VanillaSGD(gradStoch, x0, 0.01, idxSG, nIter);
+xMat.Adadelta = Adadelta(gradStoch, x0, idxSG, nIter, 0.95);
+xMat.Adam = Adam(gradStoch, x0, 0.1, idxSG, nIter, 0.8, 0.999);
+xMat.Adamax = Adamax(gradStoch, x0, 0.1, idxSG, nIter, 0.9, 0.999);
+
 
 for i = 1 : 1 : length(solvers)
     objFunMat.(solvers{i}) = ...
@@ -142,6 +151,7 @@ for i = 1 : 1 : length(solvers)
 end
 hold off
 legend(solvers);
+xlim([1, nIter + 1]);
 
 %% Plot results -- Contour plot of the objective function
 
@@ -150,6 +160,8 @@ figContour = figure('Name', 'Contour plot of the objective function');
 contour(X, Y, Z, 100);
 xlabel('x');
 ylabel('y');
+xlim(rangeX([1, end]));
+ylim(rangeY([1, end]));
 
 hold on
 for i = 1 : 1 : length(solvers)
