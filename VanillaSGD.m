@@ -14,8 +14,8 @@ function xMat = VanillaSGD(sg, x0, nIter, idxSG, stepSize)
 % without additional effort.
 %
 % `idxSG` is a row vector or a matrix which columns specify the indices of
-% the stochastic gradient to be use at each iteration. If `idxSG` has fewer
-% columns than `nIter`, it is repeating to the required size.
+% the stochastic gradient should be used at each iteration. If `idxSG` has
+% fewer columns than `nIter`, it is repeating to the required size.
 %
 % Normally, one would generate `idxSG` with `randi`, e.g. `idxSG =
 % randi(<maxIdx>, 1, nIter);`.
