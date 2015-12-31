@@ -22,11 +22,13 @@ All solvers require the stochastic gradient of the objective `sg`, initial value
 The solver function returns a matrix with the `i`-th guess of the decision variables in the `i+1`-th column (first column contains `x0`).
 
 A typical solver calling script would look like this:
-```matlab
-gs = @<stochastic gradient function>;
-x0 = [0; 0; 0; 0];
-nIter = 500;
-idxSG = randi(<number of stochastic gradients>, 1, nIter);
-
-xMat = <solver>(gs, x0, nIter, idxSG, <solver parameters>);
 ```
+gs = @(idx, x) <stochastic gradient function>;
+x0 = <initial decision variables guess>;
+nIter = <number of iterations>;
+idxSG = randi(<max index of the stochastic gradient>, 1, nIter);
+
+xMat = <solver>(gs, x0, nIter, idxSG, <solver parameter 1>, ..., <solver parameter N>);
+```
+
+See also the test files for usage examples.
