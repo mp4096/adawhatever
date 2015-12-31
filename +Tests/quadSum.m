@@ -157,7 +157,8 @@ xlim([1, nIter + 1]);
 
 figContour = figure('Name', 'Contour plot of the objective function');
 
-contour(X, Y, Z, 100);
+surf(X, Y, Z, 'EdgeAlpha', 0.1);
+colormap bone
 xlabel('x');
 ylabel('y');
 xlim(rangeX([1, end]));
@@ -165,7 +166,9 @@ ylim(rangeY([1, end]));
 
 hold on
 for i = 1 : 1 : length(solvers)
-    plot(xMat.(solvers{i})(1, :), xMat.(solvers{i})(2, :));
+    plot3(xMat.(solvers{i})(1, :), xMat.(solvers{i})(2, :), ...
+        objFunMat.(solvers{i}), ...
+        'LineWidth', 1.4);
 end
 hold off
 legend([{'Obj fun'}, solvers]);
