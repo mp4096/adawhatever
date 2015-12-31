@@ -3,11 +3,27 @@ function xMat = AdaGrad(sg, x0, nIter, idxSG, stepSize, epsilon)
 %
 % Implemented according to [2].
 %
-% Decision variable `x` is a column vector.
+% This function minimises an objective function `J(x)`, where `x` is an
+% n-dimensional column vector containing decision variables. The stochastic
+% gradient of the objective is supplied as the function handle `sg`, which
+% accepts the index (or indices) of the stochastic gradient as the first
+% argument and the value of the decision variable as the second argument,
+% i.e. `sg(idx, x)`. `sg` returns an n-dimensional column vector.
 %
-% Function handle `sg` to the stochastic gradient accepts the index of the
-% stochastic gradient as the first argument and the value of the decision
-% variable as the second argument, i.e. `sg(idx, x)`.
+% Note that both `idx` and `x` must be column vectors. If `idx` is a
+% vector, function `sg` should return the averaged stochastic gradient. You
+% can use the `AvgGrad` wrapper provided in this repo to do the averaging
+% without additional effort.
+%
+% `idxSG` is a row vector or a matrix which columns specify the indices of
+% the stochastic gradient to be use at each iteration. If `idxSG` has fewer
+% columns than `nIter`, it is repeating to the required size.
+%
+% Normally, one would generate `idxSG` with `randi`, e.g. `idxSG =
+% randi(<maxIdx>, 1, nIter);`.
+%
+% Refer to [1], [2] and [3] for a description of solver parameters
+% `stepSize` and `epsilon`.
 %
 % References:
 %   [1] Duchi, John, Hazan, Elad and Singer, Yoram. Adaptive Subgradient
